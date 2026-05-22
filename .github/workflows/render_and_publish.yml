@@ -20,6 +20,7 @@ jobs:
       - uses: quarto-dev/quarto-actions/setup@v2
       - uses: pyvista/setup-headless-display-action@v4
       - run: quarto render clouds_smok.ipynb --execute --to revealjs
+      - run: rm index.ipynb
       - uses: actions/upload-pages-artifact@v5
         with:
           path: .
