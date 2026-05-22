@@ -1,0 +1,25 @@
+name: render_and_publish
+
+defaults:
+  run:
+    shell: bash -ex {0}
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - README.md
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+      - run: python -m pip install nbformat nbclient pyyaml ipykernel
+      - uses: quarto-dev/quarto-actions/setup@v2
+      - run: quarto render clouds_smok.ipynb --execute --to revealjs
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+        
