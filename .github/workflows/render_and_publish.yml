@@ -20,7 +20,19 @@ jobs:
       - uses: quarto-dev/quarto-actions/setup@v2
       - uses: pyvista/setup-headless-display-action@v4
       - run: quarto render clouds_smok.ipynb --execute --to revealjs
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: .
-        
+
+  deploy:
+    needs: render
+    permissions:
+      pages: write      
+      id-token: write   
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
